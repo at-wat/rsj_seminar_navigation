@@ -5,7 +5,6 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /Global Options1
-        - /BaseAxes1
       Splitter Ratio: 0.784387
     Tree Height: 491
   - Class: rviz/Tool Properties
@@ -140,7 +139,7 @@ Visualization Manager:
         X: 0
         Y: 0
         Z: 0
-      Topic: /move_base/TrajectoryPlannerROS/local_plan
+      Topic: /move_base/DWAPlannerROS/local_plan
       Unreliable: true
       Value: true
     - Alpha: 1
@@ -228,7 +227,7 @@ Visualization Manager:
   Value: true
   Views:
     Current:
-      Angle: 0
+      Angle: 0.00500016
       Class: rviz/TopDownOrtho
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.06
@@ -237,7 +236,7 @@ Visualization Manager:
         Value: false
       Name: Current View
       Near Clip Distance: 0.01
-      Scale: 116.282
+      Scale: 57.9067
       Target Frame: base_link
       Value: TopDownOrtho (rviz)
       X: 0
