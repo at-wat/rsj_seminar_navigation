@@ -15,8 +15,8 @@ DWAPlannerROS:
   xy_goal_tolerance: 0.1
   latch_xy_goal_tolerance: true
 
-  sim_time: 0.8
-  sim_granularity: 0.1
+  sim_time: 1.2
+  sim_granularity: 0.2
   vx_samples: 4
   vtheta_samples: 10
 
