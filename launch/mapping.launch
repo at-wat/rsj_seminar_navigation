@@ -1,28 +1,29 @@
+<?xml version="1.0"?>
 <launch>
-	<arg name="port_urg" default="/dev/serial/by-id/usb-Hokuyo_Data_Flex_for_USB_URG-Series_USB_Driver-if00" />
-	<arg name="port_robot" default="/dev/serial/by-id/usb-T-frog_project_T-frog_Driver-if00" />
-	<arg name="robot_param" />
-	
-	<node pkg="tf" type="static_transform_publisher" name="stp_laser" args="0 0 0 0 0 0 base_link laser 100" />
+  <arg name="port_urg" default="/dev/serial/by-id/usb-Hokuyo_Data_Flex_for_USB_URG-Series_USB_Driver-if00" />
+  <arg name="port_robot" default="/dev/serial/by-id/usb-T-frog_project_T-frog_Driver-if00" />
+  <arg name="robot_param" />
 
-	<node pkg="ypspur_ros" type="ypspur_ros" name="ypspur_ros" respawn="true">
-		<param name="port" value="$(arg port_robot)" />
-		<param name="param_file" value="$(arg robot_param)" />
-	</node>
-	<node pkg="urg_node" type="urg_node" name="urg_node">
-		<param name="serial_port" value="$(arg port_urg)" />
-	</node>
+  <node pkg="tf" type="static_transform_publisher" name="stp_laser" args="0 0 0 0 0 0 base_link laser 100" />
 
-	<node pkg="gmapping" type="slam_gmapping" name="mapper">
-		<param name="maxUrange" value="4.0" type="double" />
-		<param name="xmax" value="20" type="double" />
-		<param name="ymax" value="20" type="double" />
-		<param name="xmin" value="-20" type="double" />
-		<param name="ymin" value="-20" type="double" />
-	</node>
-	<node pkg="mouse_teleop" type="mouse_teleop.py" name="mouse_teleop">
-		<remap from="/mouse_vel" to="/ypspur_ros/cmd_vel" />
-	</node>
+  <node pkg="ypspur_ros" type="ypspur_ros" name="ypspur_ros" respawn="true">
+    <param name="port" value="$(arg port_robot)" />
+    <param name="param_file" value="$(arg robot_param)" />
+  </node>
+  <node pkg="urg_node" type="urg_node" name="urg_node">
+    <param name="serial_port" value="$(arg port_urg)" />
+  </node>
 
-	<node pkg="rviz" type="rviz" args="-d '$(find rsj_seminar_navigation)/config/rviz/mapping.rviz'" name="visualizer" respawn="true" />
+  <node pkg="gmapping" type="slam_gmapping" name="mapper">
+    <param name="maxUrange" value="4.0" type="double" />
+    <param name="xmax" value="20" type="double" />
+    <param name="ymax" value="20" type="double" />
+    <param name="xmin" value="-20" type="double" />
+    <param name="ymin" value="-20" type="double" />
+  </node>
+  <node pkg="mouse_teleop" type="mouse_teleop.py" name="mouse_teleop">
+    <remap from="/mouse_vel" to="/ypspur_ros/cmd_vel" />
+  </node>
+
+  <node pkg="rviz" type="rviz" args="-d '$(find rsj_seminar_navigation)/config/rviz/mapping.rviz'" name="visualizer" respawn="true" />
 </launch>

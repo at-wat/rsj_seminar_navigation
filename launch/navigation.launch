@@ -1,50 +1,51 @@
+<?xml version="1.0"?>
 <launch>
-	<arg name="port_urg" default="/dev/serial/by-id/usb-Hokuyo_Data_Flex_for_USB_URG-Series_USB_Driver-if00" />
-	<arg name="port_robot" default="/dev/serial/by-id/usb-T-frog_project_T-frog_Driver-if00" />
-	<arg name="robot_param" />
-	<arg name="map_file" default="/home/$(env USER)/maps/map.yaml" />
-	
-	<node pkg="tf" type="static_transform_publisher" name="stp_laser" args="0 0 0 0 0 0 base_link laser 100" />
+  <arg name="port_urg" default="/dev/serial/by-id/usb-Hokuyo_Data_Flex_for_USB_URG-Series_USB_Driver-if00" />
+  <arg name="port_robot" default="/dev/serial/by-id/usb-T-frog_project_T-frog_Driver-if00" />
+  <arg name="robot_param" />
+  <arg name="map_file" default="/home/$(env USER)/maps/map.yaml" />
 
-	<rosparam param="footprint" ns="/move_base/local_costmap">[[0.05,-0.2], [0.05,0.2], [-0.3,0.2], [-0.3,-0.2]]</rosparam>
-	<rosparam param="footprint" ns="/move_base/global_costmap">[[0.05,-0.2], [0.05,0.2], [-0.3,0.2], [-0.3,-0.2]]</rosparam>
+  <node pkg="tf" type="static_transform_publisher" name="stp_laser" args="0 0 0 0 0 0 base_link laser 100" />
 
-	<node respawn="true" name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)"/> 
+  <rosparam param="footprint" ns="/move_base/local_costmap">[[0.05,-0.2], [0.05,0.2], [-0.3,0.2], [-0.3,-0.2]]</rosparam>
+  <rosparam param="footprint" ns="/move_base/global_costmap">[[0.05,-0.2], [0.05,0.2], [-0.3,0.2], [-0.3,-0.2]]</rosparam>
 
-	<node pkg="ypspur_ros" type="ypspur_ros" name="ypspur_ros">
-		<param name="port" value="$(arg port_robot)" />
-		<param name="param_file" value="$(arg robot_param)" />
-		<remap from="~/odom" to="/odom" />
-	</node>
-	<node pkg="urg_node" type="urg_node" name="urg_node">
-		<param name="serial_port" value="$(arg port_urg)" />
-		<param name="min_ang" value="-1.8" />
-		<param name="max_ang" value="1.8" />
-	</node>
+  <node respawn="true" name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)"/> 
+
+  <node pkg="ypspur_ros" type="ypspur_ros" name="ypspur_ros">
+    <param name="port" value="$(arg port_robot)" />
+    <param name="param_file" value="$(arg robot_param)" />
+    <remap from="~/odom" to="/odom" />
+  </node>
+  <node pkg="urg_node" type="urg_node" name="urg_node">
+    <param name="serial_port" value="$(arg port_urg)" />
+    <param name="min_ang" value="-1.8" />
+    <param name="max_ang" value="1.8" />
+  </node>
 
 
-	<node name="amcl" pkg="amcl" type="amcl">
-		<param name="odom_alpha1" type="double" value="7" />
-		<param name="odom_alpha2" type="double" value="7" />
-		<param name="odom_alpha3" type="double" value="3.5" />
-		<param name="odom_alpha4" type="double" value="3.5" />
-		<param name="laser_max_beams" type="int" value="150" />
-		<param name="min_particles" type="int" value="300" />
-		<param name="max_particles" type="int" value="500" />
-		<param name="update_min_d" type="double" value="0.05" />
-		<param name="update_min_a" type="double" value="0.08" />
-	</node>
+  <node name="amcl" pkg="amcl" type="amcl">
+    <param name="odom_alpha1" type="double" value="7" />
+    <param name="odom_alpha2" type="double" value="7" />
+    <param name="odom_alpha3" type="double" value="3.5" />
+    <param name="odom_alpha4" type="double" value="3.5" />
+    <param name="laser_max_beams" type="int" value="150" />
+    <param name="min_particles" type="int" value="300" />
+    <param name="max_particles" type="int" value="500" />
+    <param name="update_min_d" type="double" value="0.05" />
+    <param name="update_min_a" type="double" value="0.08" />
+  </node>
 
-	<node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
-		<rosparam file="$(find rsj_seminar_navigation)/config/move_base.yaml" command="load" />
-		<rosparam file="$(find rsj_seminar_navigation)/config/costmap_common.yaml" command="load" ns="global_costmap" />
-		<rosparam file="$(find rsj_seminar_navigation)/config/costmap_common.yaml" command="load" ns="local_costmap" />
-		<rosparam file="$(find rsj_seminar_navigation)/config/costmap_local.yaml" command="load" />
-		<rosparam file="$(find rsj_seminar_navigation)/config/costmap_global.yaml" command="load" />
-		<rosparam file="$(find rsj_seminar_navigation)/config/planner_local.yaml" command="load" />
-		<rosparam file="$(find rsj_seminar_navigation)/config/planner_global.yaml" command="load" />
-		<remap from="/cmd_vel" to="/ypspur_ros/cmd_vel" />
-	</node>
-		
-	<node pkg="rviz" type="rviz" args="-d '$(find rsj_seminar_navigation)/config/rviz/navigation.rviz'" name="visualizer" respawn="true" />
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <rosparam file="$(find rsj_seminar_navigation)/config/move_base.yaml" command="load" />
+    <rosparam file="$(find rsj_seminar_navigation)/config/costmap_common.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find rsj_seminar_navigation)/config/costmap_common.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find rsj_seminar_navigation)/config/costmap_local.yaml" command="load" />
+    <rosparam file="$(find rsj_seminar_navigation)/config/costmap_global.yaml" command="load" />
+    <rosparam file="$(find rsj_seminar_navigation)/config/planner_local.yaml" command="load" />
+    <rosparam file="$(find rsj_seminar_navigation)/config/planner_global.yaml" command="load" />
+    <remap from="/cmd_vel" to="/ypspur_ros/cmd_vel" />
+  </node>
+
+  <node pkg="rviz" type="rviz" args="-d '$(find rsj_seminar_navigation)/config/rviz/navigation.rviz'" name="visualizer" respawn="true" />
 </launch>
