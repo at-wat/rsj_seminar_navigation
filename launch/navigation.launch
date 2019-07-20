@@ -25,15 +25,15 @@
 
 
   <node name="amcl" pkg="amcl" type="amcl">
-    <param name="odom_alpha1" type="double" value="7" />
-    <param name="odom_alpha2" type="double" value="7" />
-    <param name="odom_alpha3" type="double" value="3.5" />
-    <param name="odom_alpha4" type="double" value="3.5" />
-    <param name="laser_max_beams" type="int" value="150" />
-    <param name="min_particles" type="int" value="300" />
-    <param name="max_particles" type="int" value="500" />
-    <param name="update_min_d" type="double" value="0.05" />
-    <param name="update_min_a" type="double" value="0.08" />
+    <param name="odom_alpha1" value="7.0" />
+    <param name="odom_alpha2" value="7.0" />
+    <param name="odom_alpha3" value="3.5" />
+    <param name="odom_alpha4" value="3.5" />
+    <param name="laser_max_beams" value="150" />
+    <param name="min_particles" value="300" />
+    <param name="max_particles" value="500" />
+    <param name="update_min_d" value="0.05" />
+    <param name="update_min_a" value="0.08" />
   </node>
 
   <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
